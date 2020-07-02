@@ -18,7 +18,7 @@ const Flags = ({ handleCountryChange }) => {
       <Grid container spacing={3} justyfy="center">
         <Grid item xs={4} md='auto' >
           <img
-            onClick={() => handleCountryChange("Bulgaria")}
+            onClick={() => handleCountryChange("bulgaria")}
             src={bgFlag}
             className={styles.Flag}
             alt="bgFlag"
