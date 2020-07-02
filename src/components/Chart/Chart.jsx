@@ -18,6 +18,7 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
     fetchMyAPI();
   }, []);
 
+  console.log(dailyData);
   const barChart = (
     confirmed ? (
       <Bar

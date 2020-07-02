@@ -8,6 +8,7 @@ margin:50px 0;
 
 .card{
     margin: 0 2% !Important;
+    width: 360px;
 }
 
 .infected{
@@ -18,4 +19,10 @@ margin:50px 0;
 }
 .deaths{
     border-bottom: 10px solid rgba(255, 0, 0, 0.5);
+}
+.curState{
+    margin-bottom: 20px;
+    font-size: 2em;
+    margin-top: -35px;
+    text-align: center;
 }
