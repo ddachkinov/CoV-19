@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Line, Bar } from 'react-chartjs-2';
+import React, { useState, useEffect } from "react";
+import { Line, Bar } from "react-chartjs-2";
 
-import { fetchDailyData } from '../../api';
+import { fetchDailyData } from "../../api";
 
-import styles from './Chart.module.css';
+import styles from "./Chart.module.css";
 
-const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
+const Chart = ({ data: { confirmed, deltaConfirmedDetail, recovered, deaths }, country }) => {
   const [dailyData, setDailyData] = useState({});
-
   useEffect(() => {
     const fetchMyAPI = async () => {
       const initialDailyData = await fetchDailyData();
@@ -18,55 +17,59 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
     fetchMyAPI();
   }, []);
 
-  console.log(dailyData);
-  const barChart = (
-    confirmed ? (
+  const barChart = confirmed ? (
       <Bar
         data={{
-          labels: ['Infected', 'Recovered', 'Deaths'],
+          labels: ["Infected", "Recovered", "Deaths"],
           datasets: [
             {
-              label: 'People',
-              backgroundColor: ['rgba(0, 0, 255, 0.5)', 'rgba(0, 255, 0, 0.5)', 'rgba(255, 0, 0, 0.5)'],
+              label: "People",
+              backgroundColor: [
+                "rgba(0, 0, 255, 0.5)",
+                "rgba(0, 255, 0, 0.5)",
+                "rgba(255, 0, 0, 0.5)",
+              ],
               data: [confirmed.value, recovered.value, deaths.value],
             },
           ],
         }}
+        height={300}
         options={{
           legend: { display: false },
-          title: { display: true, text: `Current state in ${country}` },
+          // title: { display: true, text: `Current state in ${country}` },
+          maintainAspectRatio: false
         }}
       />
-    ) : null
-  );
-
-  const lineChart = (
-    dailyData[0] ? (
+  ) : null;
+  const lineChart = dailyData[0] ? (
       <Line
         data={{
-          labels: dailyData.map(({ date }) => date),
-          datasets: [{
-            data: dailyData.map((data) => data.confirmed),
-            label: 'Infected',
-            borderColor: '#3333ff',
-            fill: true,
-          }, {
-            data: dailyData.map((data) => data.deaths),
-            label: 'Deaths',
-            borderColor: 'red',
-            backgroundColor: 'rgba(255, 0, 0, 0.5)',
-            fill: true,
-          },
+          labels: dailyData.slice(-30).map(({ date }) => date),
+          datasets: [
+            {
+              data: dailyData.slice(-30).map((data) => data.confirmed),
+              label: "Infected",
+              borderColor: "#3333ff",
+              fill: true,
+            },
+            {
+              data: dailyData.slice(-30).map((data) => data.deaths),
+              label: "Deaths",
+              borderColor: "red",
+              backgroundColor: "rgba(255, 0, 0, 0.5)",
+              fill: true,
+            },
           ],
         }}
+        height = {600}
+        options = {{
+          maintainAspectRatio: false
+        }}
       />
-    ) : null
-  );
+  ) : null;
 
   return (
-    <div className={styles.container}>
-      {country ? barChart : lineChart}
-    </div>
+    <div className={styles.container}>{country ? barChart : lineChart}</div>
   );
 };
 

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Grid } from "@material-ui/core";
 import CountUp from "react-countup";
 import cx from "classnames";
+
+import { fetchDailyData } from "../../api";
 
 import styles from "./Cards.module.css";
 
@@ -9,17 +11,31 @@ const Cards = ({
   data: { confirmed, recovered, deaths, lastUpdate },
   country,
 }) => {
-  if (!confirmed) {
-    return "Loading";
-  }
+ 
+  const [dailyData, setDailyData] = useState({});
+  useEffect(() => {
+    const fetchMyAPI = async () => {
+      const initialDailyData = await fetchDailyData();
 
+      setDailyData(initialDailyData);
+    };
+    fetchMyAPI();
+  }, []);
+
+if (!confirmed) {
+  return "Loading";
+}
+
+const deltaConfirmed = country === "" ? (dailyData[0] ? dailyData.slice(-1).map((data) => data.deltaConfirmedDetail) : null) : null;
+
+console.log(deltaConfirmed)
   return (
     <div className={styles.container}>
-        <div className={styles.curState}>
-            <Typography variant="h5">
-            Current state for {country !== "" ? country : "the World"}
-            </Typography>
-        </div>
+      <div className={styles.curState}>
+        <Typography variant="h5">
+          Current state for {country !== "" ? country : "the World"}
+        </Typography>
+      </div>
       <Grid container spacing={3} justify="center">
         <Grid
           item
@@ -36,6 +52,16 @@ const Cards = ({
               <CountUp
                 start={0}
                 end={confirmed.value}
+                duration={0.3}
+                separator=","
+              />
+            </Typography>
+
+            <Typography variant="h6">
+              +
+              <CountUp
+                start={0}
+                end={deltaConfirmed}
                 duration={0.3}
                 separator=","
               />
