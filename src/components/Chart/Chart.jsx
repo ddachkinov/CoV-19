@@ -54,7 +54,7 @@ const Chart = ({ data: { confirmed, deltaConfirmedDetail, recovered, deaths }, c
             },
             {
               data: dailyData.slice(-30).map((data) => data.deaths),
-              label: "Deaths",
+              label: "Fatalities",
               borderColor: "red",
               backgroundColor: "rgba(255, 0, 0, 0.5)",
               fill: true,
