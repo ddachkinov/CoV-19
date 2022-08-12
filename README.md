@@ -1,3 +1,6 @@
+Motivation:
+This project was created on the spur of the Covid19 infection in 2020 with the purpose to inform myself and the others as well as to practice asynchronous web API with Axios and React
+
 Preview here: https://covid19-global-tracker-2fecb.web.app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
